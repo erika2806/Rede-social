@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VibeConnect | Rede Social Moderna</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Barra Superior (Navbar) -->
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="#" class="brand" id="navHome">
+                <span class="brand-logo">⚡</span>
+                <span class="brand-name">Vibe<strong>Connect</strong></span>
+            </a>
+
+            <div class="search-bar">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="searchInput" placeholder="Buscar publicações, pessoas ou #hashtags...">
+                <button id="clearSearch" class="clear-btn hidden" title="Limpar busca">&times;</button>
+            </div>
+
+            <div class="nav-actions">
+                <button class="icon-btn" id="themeToggle" title="Alternar tema claro/escuro" aria-label="Alternar tema">
+                    <span id="themeIcon">🌙</span>
+                </button>
+                <div class="notification-wrapper">
+                    <button class="icon-btn" id="notifBtn" title="Notificações" aria-label="Notificações">
+                        🔔
+                        <span class="badge-count" id="notifBadge">3</span>
+                    </button>
+                    <div class="dropdown-menu hidden" id="notifDropdown">
+                        <div class="dropdown-header">
+                            <h4>Notificações</h4>
+                            <button id="markAllRead" class="link-btn">Marcar lidas</button>
+                        </div>
+                        <ul class="notif-list" id="notifList"></ul>
+                    </div>
+                </div>
+                <div class="user-pill" id="headerProfileBtn">
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80" alt="Avatar">
+                    <span id="headerUserName">Camila Rocha</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Layout Principal em 3 Colunas -->
+    <main class="main-layout">
+        <!-- Coluna Esquerda: Perfil e Navegação -->
+        <aside class="sidebar-left">
+            <div class="card profile-summary">
+                <div class="profile-cover"></div>
+                <div class="profile-info">
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80" alt="Foto de Perfil" class="profile-avatar" id="sideAvatar">
+                    <h2 id="sideName">Camila Rocha</h2>
+                    <p class="username" id="sideUsername">@camilarocha.dev</p>
+                    <p class="bio" id="sideBio">Product Designer & Front-end Enthusiast. Construindo interfaces centradas em pessoas. ✨</p>
+                    <div class="profile-stats">
+                        <div><strong id="statPosts">0</strong><span>Posts</span></div>
+                        <div><strong id="statFollowing">148</strong><span>Seguindo</span></div>
+                        <div><strong id="statFollowers">1.2k</strong><span>Seguidores</span></div>
+                    </div>
+                    <button class="btn btn-outline btn-sm btn-block" id="editProfileBtn">Editar Perfil</button>
+                </div>
+            </div>
+
+            <nav class="card side-nav">
+                <button class="side-nav-item active" data-feed="all">🏠 Feed Principal</button>
+                <button class="side-nav-item" data-feed="following">👥 Seguindo</button>
+                <button class="side-nav-item" data-feed="saved">🔖 Itens Salvos</button>
+                <button class="side-nav-item" data-feed="mine">👤 Minhas Publicações</button>
+            </nav>
+        </aside>
+
+        <!-- Coluna Central: Stories, Criador de Posts e Feed -->
+        <section class="feed-column">
+            <!-- Stories -->
+            <div class="card stories-container" id="storiesList">
+                <!-- Preenchido via JS -->
+            </div>
+
+            <!-- Criar Publicação -->
+            <div class="card create-post-card">
+                <div class="create-post-top">
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80" alt="Seu avatar" class="avatar-sm">
+                    <textarea id="postContent" rows="3" placeholder="No que você está pensando hoje, Camila? Use #hashtags..."></textarea>
+                </div>
+
+                <div class="image-url-box hidden" id="imageUrlBox">
+                    <input type="url" id="postImageUrl" placeholder="Cole a URL de uma imagem (ex: https://images.unsplash.com/...)">
+                    <button type="button" id="removeImgInput" class="icon-btn-sm" title="Remover imagem">&times;</button>
+                </div>
+
+                <div class="image-preview hidden" id="imagePreviewContainer">
+                    <img id="imagePreview" src="" alt="Pré-visualização">
+                </div>
+
+                <div class="create-post-footer">
+                    <div class="post-tools">
+                        <button type="button" class="tool-btn" id="toggleImageBtn">🖼️ Foto (URL)</button>
+                        <button type="button" class="tool-btn" id="addEmojiBtn">😊 Sentimento</button>
+                        <select id="postVisibility" class="visibility-select" title="Visibilidade">
+                            <option value="Público">🌎 Público</option>
+                            <option value="Seguidores">👥 Seguidores</option>
+                        </select>
+                    </div>
+                    <div class="post-submit-group">
+                        <span class="char-counter" id="charCounter">0/500</span>
+                        <button type="button" class="btn btn-primary" id="publishBtn">Publicar</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Barra de Filtro Ativo -->
+            <div class="feed-filter-header">
+                <h3 id="feedTitle">Feed Principal</h3>
+                <select id="sortSelect" class="sort-select">
+                    <option value="recent">Mais recentes</option>
+                    <option value="popular">Mais curtidos</option>
+                </select>
+            </div>
+
+            <!-- Lista de Publicações -->
+            <div id="postsFeed" class="posts-feed">
+                <!-- Posts renderizados via JavaScript -->
+            </div>
+        </section>
+
+        <!-- Coluna Direita: Tendências e Sugestões -->
+        <aside class="sidebar-right">
+            <div class="card widget">
+                <h3>🔥 Assuntos do Momento</h3>
+                <ul class="trending-list" id="trendingList">
+                    <li data-tag="#Tecnologia">
+                        <span class="trend-cat">Inovação • Em alta</span>
+                        <strong>#Tecnologia</strong>
+                        <span class="trend-count">12,4 mil posts</span>
+                    </li>
+                    <li data-tag="#DesignUI">
+                        <span class="trend-cat">Criatividade • Tendência</span>
+                        <strong>#DesignUI</strong>
+                        <span class="trend-count">8,1 mil posts</span>
+                    </li>
+                    <li data-tag="#Sustentabilidade">
+                        <span class="trend-cat">Planeta • Comunidade</span>
+                        <strong>#Sustentabilidade</strong>
+                        <span class="trend-count">5,9 mil posts</span>
+                    </li>
+                    <li data-tag="#DevWeb">
+                        <span class="trend-cat">Programação • Brasil</span>
+                        <strong>#DevWeb</strong>
+                        <span class="trend-count">4,3 mil posts</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="card widget">
+                <h3>✨ Quem Seguir</h3>
+                <ul class="suggestions-list" id="suggestionsList">
+                    <!-- Renderizado via JS -->
+                </ul>
+            </div>
+
+            <footer class="mini-footer">
+                <p>VibeConnect &copy; 2026 • Privacidade • Termos • Cookies</p>
+            </footer>
+        </aside>
+    </main>
+
+    <!-- Navegação Inferior Mobile -->
+    <nav class="mobile-bottom-nav">
+        <button class="mobile-nav-btn active" data-feed="all">🏠</button>
+        <button class="mobile-nav-btn" data-feed="following">👥</button>
+        <button class="mobile-nav-btn" id="mobileFocusPost">➕</button>
+        <button class="mobile-nav-btn" data-feed="saved">🔖</button>
+        <button class="mobile-nav-btn" id="mobileEditProfile">👤</button>
+    </nav>
+
+    <!-- Modal: Editar Perfil -->
+    <div class="modal hidden" id="profileModal">
+        <div class="modal-overlay" id="closeProfileOverlay"></div>
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3>Editar Perfil</h3>
+                <button class="close-modal" id="closeProfileModal">&times;</button>
+            </div>
+            <form id="profileForm">
+                <div class="form-group">
+                    <label for="inputName">Nome de exibição</label>
+                    <input type="text" id="inputName" required maxlength="40">
+                </div>
+                <div class="form-group">
+                    <label for="inputUsername">Nome de usuário</label>
+                    <input type="text" id="inputUsername" required maxlength="30">
+                </div>
+                <div class="form-group">
+                    <label for="inputBio">Biografia</label>
+                    <textarea id="inputBio" rows="3" maxlength="160"></textarea>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-outline" id="cancelProfileBtn">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: Visualizar Story -->
+    <div class="modal hidden" id="storyModal">
+        <div class="modal-overlay" id="closeStoryOverlay"></div>
+        <div class="story-viewer">
+            <div class="story-progress"><div class="story-progress-bar" id="storyProgressBar"></div></div>
+            <div class="story-viewer-header">
+                <div class="story-user">
+                    <img id="storyViewerAvatar" src="" alt="Avatar">
+                    <div>
+                        <strong id="storyViewerName">Nome</strong>
+                        <span id="storyViewerTime">2h</span>
+                    </div>
+                </div>
+                <button class="close-story" id="closeStoryBtn">&times;</button>
+            </div>
+            <img id="storyViewerImg" src="" alt="Story" class="story-viewer-media">
+            <p id="storyViewerCaption" class="story-caption"></p>
+        </div>
+    </div>
+
+    <!-- Toast de Feedback -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="main.js"></script>
+</body>
+</html>
